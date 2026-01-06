@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Crown, Sparkles, Gem, Gift } from 'lucide-react';
+import { staggerContainer, fadeInUp } from '../utils/animations';
 
 const benefits = [
   {
@@ -68,13 +69,17 @@ const MemberBenefits = () => {
             </motion.button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+          >
             {benefits.map((benefit, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
+                variants={fadeInUp}
                 className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-hoteldey-navy/5 hover:shadow-xl hover:border-hoteldey-gold/20 transition-all group"
               >
                 <div className={`w-14 h-14 rounded-2xl ${benefit.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
@@ -86,7 +91,7 @@ const MemberBenefits = () => {
                 </p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

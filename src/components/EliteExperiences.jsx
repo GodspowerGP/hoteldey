@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Ship, Trees, Map, Camera } from 'lucide-react';
+import { staggerContainer, fadeInUp } from '../utils/animations';
 
 const experiences = [
   {
@@ -48,14 +49,18 @@ const EliteExperiences = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
           {experiences.map((exp, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              variants={fadeInUp}
               whileHover={{ rotateY: 5 }}
-              transition={{ delay: idx * 0.1, type: 'spring' }}
               className="relative h-[500px] rounded-[3rem] overflow-hidden group shadow-2xl"
             >
               <img 
@@ -83,7 +88,7 @@ const EliteExperiences = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

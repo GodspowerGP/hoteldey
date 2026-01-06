@@ -1,8 +1,19 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, Calendar, Users, Search } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { MapPin, Calendar, Search } from 'lucide-react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Hero = () => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const onChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
+
   const containerVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -24,87 +35,80 @@ const Hero = () => {
     visible: { opacity: 1, y: 0 }
   };
 
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 150]);
+
   return (
     <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
+      <motion.div style={{ y }} className="absolute inset-0 z-0">
         <img 
           src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop" 
           alt="Lagos Luxury Hotel"
-          className="w-full h-full object-cover scale-105"
+          className="w-full h-full object-cover scale-110"
         />
-        <div className="absolute inset-0 bg-hoteldey-navy/50 bg-gradient-to-b from-hoteldey-navy/40 to-hoteldey-navy/80" />
-      </div>
+        <div className="absolute inset-0 bg-hoteldey-navy/40 bg-gradient-to-b from-hoteldey-navy/30 to-hoteldey-navy/90" />
+      </motion.div>
 
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 max-w-5xl mx-auto px-6 text-center"
+        className="relative z-10 max-w-5xl mx-auto px-6 text-center w-full"
       >
-        <motion.span 
-          variants={itemVariants}
-          className="inline-block text-hoteldey-gold font-bold tracking-[0.2em] uppercase mb-4"
-        >
-          Welcome to Hoteldey
-        </motion.span>
         <motion.h1 
           variants={itemVariants}
-          className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight tracking-tight"
+          className="text-5xl md:text-7xl font-bold text-white mb-12 leading-tight tracking-tight drop-shadow-lg"
         >
-          Experience Nigeria's <br /> 
-          <span className="text-hoteldey-gold italic font-serif">Finest</span> Hospitality
+          Come Enjoy <br /> 
+          <span className="text-hoteldey-gold italic font-serif">Nija Finest</span> Hospitality
         </motion.h1>
         
         {/* Glass Search Widget */}
         <motion.div 
           variants={itemVariants}
-          className="mt-12 glass-card rounded-3xl p-2 md:p-3 overflow-hidden shadow-2xl border-white/20"
+          className="mt-8 glass-card rounded-[2rem] p-4 md:p-6 shadow-2xl border-white/20 max-w-4xl mx-auto"
         >
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
-            <div className="flex items-center gap-3 px-6 py-4 bg-white/5 rounded-2xl border border-white/10">
-              <MapPin className="text-hoteldey-gold shrink-0" size={20} />
-              <div className="text-left">
-                <label className="text-white/40 text-[10px] uppercase font-bold tracking-wider">Location</label>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            
+            {/* Destination Input */}
+            <div className="md:col-span-5 flex items-center gap-3 px-6 py-4 bg-white rounded-2xl border border-white/10 text-hoteldey-navy h-full">
+              <MapPin className="text-hoteldey-gold shrink-0" size={24} />
+              <div className="text-left w-full">
                 <input 
                   type="text" 
-                  placeholder="Where to?" 
-                  className="bg-transparent border-none outline-none text-white placeholder:text-white/60 w-full font-medium"
+                  placeholder="where you dey go" 
+                  className="bg-transparent border-none outline-none text-hoteldey-navy placeholder:text-gray-400 w-full font-bold text-lg"
                 />
               </div>
             </div>
             
-            <div className="flex items-center gap-3 px-6 py-4 bg-white/5 rounded-2xl border border-white/10">
-              <Calendar className="text-hoteldey-gold shrink-0" size={20} />
-              <div className="text-left">
-                <label className="text-white/40 text-[10px] uppercase font-bold tracking-wider">Check-in</label>
-                <input 
-                  type="text" 
-                  placeholder="Add dates" 
-                  className="bg-transparent border-none outline-none text-white placeholder:text-white/60 w-full font-medium"
+            {/* Date Picker */}
+            <div className="md:col-span-5 flex items-center gap-3 px-6 py-4 bg-white rounded-2xl border border-white/10 text-hoteldey-navy h-full relative z-50">
+              <Calendar className="text-hoteldey-gold shrink-0" size={24} />
+              <div className="text-left w-full">
+                <DatePicker
+                  selected={startDate}
+                  onChange={onChange}
+                  startDate={startDate}
+                  endDate={endDate}
+                  selectsRange
+                  placeholderText="check in - check out"
+                  className="bg-transparent border-none outline-none text-hoteldey-navy placeholder:text-gray-400 w-full font-bold text-lg focus:ring-0"
+                  calendarClassName="!font-sans !rounded-xl !border-0 !shadow-xl"
                 />
               </div>
             </div>
 
-            <div className="flex items-center gap-3 px-6 py-4 bg-white/5 rounded-2xl border border-white/10">
-              <Users className="text-hoteldey-gold shrink-0" size={20} />
-              <div className="text-left">
-                <label className="text-white/40 text-[10px] uppercase font-bold tracking-wider">Guests</label>
-                <input 
-                  type="text" 
-                  placeholder="2 Guests" 
-                  className="bg-transparent border-none outline-none text-white placeholder:text-white/60 w-full font-medium"
-                />
-              </div>
+            {/* Search Button */}
+            <div className="md:col-span-2 h-full">
+                <button 
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full h-full bg-hoteldey-gold hover:bg-hoteldey-gold/90 text-hoteldey-navy font-extrabold text-lg rounded-2xl flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] active:scale-95 py-4 md:py-0 shadow-lg shadow-hoteldey-gold/20"
+                >
+                  <span>Oya search</span>
+                </button>
             </div>
-
-            <button 
-              whileTap={{ scale: 0.95 }}
-              className="bg-hoteldey-gold hover:bg-hoteldey-gold/90 text-hoteldey-navy font-bold rounded-2xl flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] active:scale-95 py-4 md:py-0"
-            >
-              <Search size={20} />
-              <span>Search</span>
-            </button>
           </div>
         </motion.div>
       </motion.div>

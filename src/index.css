@@ -21,3 +21,21 @@
     @apply text-white/80 hover:text-white transition-colors duration-200 font-medium;
   }
 }
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  @keyframes zigzag {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-zigzag {
+    animation: zigzag 10s linear infinite;
+  }
+}
